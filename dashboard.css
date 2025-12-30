@@ -8,6 +8,7 @@
 body {
   background: #0b0b0b;
   color: white;
+  overflow-x: hidden;
 }
 
 /* Navigation Bar */
@@ -21,16 +22,16 @@ body {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  z-index: 10;
+  z-index: 100;
 }
 
 .logo {
-  font-size: 22px;
+  font-size: 18px;
   font-weight: bold;
 }
 
 nav a {
-  margin-left: 25px;
+  margin-left: 10px;
   text-decoration: none;
   color: white;
   font-weight: 500;
@@ -99,6 +100,7 @@ nav a:hover {
 .hero-content {
   position: relative;
   max-width: 450px;
+  z-index: 10;
 }
 
 .hero h1 {
@@ -157,44 +159,86 @@ nav a:hover {
   font-size: 22px;
 }
 
-/* Movie Grid */
-.movie-horizontal img {
-  width: 300;
-  height: 100px;
+/* Movie Grid / Horizontal */
+.movie-list-wrapper {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
 
-  border-radius: 12px;
-  transition: 0.4s;
+.scroll-icon {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background-color: rgba(0, 0, 0, 0.5);
+  color: white;
+  border: none;
+  font-size: 20px;
   cursor: pointer;
+  z-index: 100;
+  display: flex; /* Always display for visual, or use opacity if preferred */
+  align-items: center;
+  justify-content: center;
+  transition: background-color 0.3s;
 }
-.movie-horizontal img:hover {
-  transform: scale(1.15);
 
-  box-shadow: 0 15px 40px rgba(0, 0, 0, 0.8);
+.scroll-icon:hover {
+  background-color: rgba(0, 0, 0, 0.8);
 }
 
+.scroll-icon.left {
+  left: -20px;
+}
+
+.scroll-icon.right {
+  right: -20px;
+}
+
+/* Ensure lists don't overlap the buttons visually too much, or buttons overlay them properly */
+.movie-horizontal,
 .movie-grid {
   display: flex;
-  gap: 18px;
-  padding-bottom: 15px;
+  gap: 15px;
+  padding: 15px 0;
+  width: 100%;
+  overflow-x: auto;
+  scroll-behavior: smooth;
+  scrollbar-width: none;
+}
+
+.movie-horizontal::-webkit-scrollbar,
+.movie-grid::-webkit-scrollbar {
+  display: none;
+}
+
+.movie-horizontal img {
+  width: 240px;
+  height: 150px;
+  border-radius: 12px;
+  transition: 0.4s;
+  flex-shrink: 0;
 }
 
 .movie-grid img {
   width: 170px;
   height: 250px;
-
   border-radius: 12px;
   transition: 0.4s;
   cursor: pointer;
+  flex-shrink: 0;
 }
 
+.movie-horizontal img:hover,
 .movie-grid img:hover {
   transform: scale(1.15);
-
   box-shadow: 0 15px 40px rgba(0, 0, 0, 0.8);
+  z-index: 10;
 }
 
 /* Footer */
-
 .footer {
   background: #0e0e0e;
   padding: 70px 60px;
@@ -267,33 +311,109 @@ nav a:hover {
 }
 
 /* Responsive */
+
+@media (max-width: 1024px) {
+  .navbar {
+    padding: 0 30px;
+  }
+  .hero {
+    padding: 0 30px;
+  }
+}
+
 @media (max-width: 768px) {
-  .footer-container {
-    grid-template-columns: 1fr;
-    gap: 40px;
+  .navbar {
+    height: 50px;
+    padding: 0 15px;
   }
 
+  nav {
+    display: flex;
+    align-items: center;
+  }
+
+  nav a {
+    margin-left: 10px;
+    font-size: 11px; /* Smaller font to fit everything */
+  }
+
+  .logo {
+    display: block;
+    font-size: 14px; /* Smaller logo text */
+  }
+
+  .hero {
+    height: 60vh;
+    padding: 0 20px;
+    align-items: flex-end; /* Push text to bottom */
+    padding-bottom: 60px;
+  }
+
+  .hero-content {
+    max-width: 100%;
+    margin-bottom: 20px;
+  }
+
+  .hero h1 {
+    font-size: 36px; /* Smaller title */
+  }
+
+  .hero-desc {
+    font-size: 14px;
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+
+  .hero-buttons {
+    gap: 10px;
+  }
+
+  .section {
+    padding: 20px 15px; /* Reduce padding */
+  }
+
+  /* Footer responsiveness */
+  .footer {
+    padding: 40px 20px;
+  }
+  .footer-container {
+    grid-template-columns: 1fr;
+    gap: 30px;
+  }
   .footer-col {
     grid-template-columns: 1fr 1fr;
   }
 }
 
-/* Responsif */
-@media (max-width: 768px) {
-  .navbar {
-    padding: 0 20px;
-  }
-
-  .hero {
-    padding: 0 30px;
-  }
-
+@media (max-width: 480px) {
   .hero h1 {
-    font-size: 40px;
+    margin-bottom: 10px;
+    font-size: 28px;
+  }
+
+  .hero-buttons {
+    flex-wrap: wrap;
+  }
+
+  .btn-play,
+  .btn-info {
+    padding: 10px 20px;
+    font-size: 14px;
+  }
+
+  .movie-horizontal img {
+    width: 180px;
+    height: 110px;
   }
 
   .movie-grid img {
     width: 130px;
-    height: 200px;
+    height: 190px;
+  }
+
+  /* Hide scroll buttons on mobile/tablet where touch is primary */
+  .scroll-icon {
+    display: none;
   }
 }
